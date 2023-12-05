@@ -1,7 +1,7 @@
 import textwrap
 import unittest
 
-from advent import Day01
+from advent import day01
 
 
 class Day01Tests(unittest.TestCase):
@@ -14,8 +14,7 @@ class Day01Tests(unittest.TestCase):
             treb7uchet
             """
         )
-
-        self.assertEqual(Day01.part1(input), 142)
+        self.assertEqual(day01.part1(input), 142)
 
     def test_part2(self):
         input = textwrap.dedent(
@@ -29,35 +28,34 @@ class Day01Tests(unittest.TestCase):
             7pqrstsixteen
             """
         )
-
-        self.assertEqual(Day01.part2(input), 281)
+        self.assertEqual(day01.part2(input), 281)
 
     def test_find_digit(self):
         input = "1abc2"
-        self.assertEqual(Day01._find_first_digit(input), 1)
-        self.assertEqual(Day01._find_last_digit(input), 2)
+        self.assertEqual(day01._find_first_digit(input), 1)
+        self.assertEqual(day01._find_last_digit(input), 2)
 
     def test_find_digit_notends(self):
         input = "treb7uchet"
-        self.assertEqual(Day01._find_first_digit(input), 7)
-        self.assertEqual(Day01._find_last_digit(input), 7)
+        self.assertEqual(day01._find_first_digit(input), 7)
+        self.assertEqual(day01._find_last_digit(input), 7)
 
     def test_get_all_digits_one_word(self):
         input = "eight"
-        self.assertEqual(Day01._get_all_digits_on_line(input), [(0, 8)])
+        self.assertEqual(day01._get_all_digits_on_line(input), [(0, 8)])
 
     def test_get_all_digits_one_word_and_number(self):
         input = "eight2"
-        self.assertEqual(Day01._get_all_digits_on_line(input), [(0, 8), (5, 2)])
+        self.assertEqual(day01._get_all_digits_on_line(input), [(0, 8), (5, 2)])
 
     def test_mean_case_that_started_this_whole_thing(self):
         input = "eightwothree"
-        self.assertEqual(Day01._get_all_digits_on_line(input), [(0, 8), (4, 2), (7, 3)])
+        self.assertEqual(day01._get_all_digits_on_line(input), [(0, 8), (4, 2), (7, 3)])
 
     def test_process_line_part2(self):
         input = "two1nine"
-        self.assertEqual(Day01._process_line_part2(input), 29)
+        self.assertEqual(day01._process_line_part2(input), 29)
 
     def test_process_line_part2_overlap(self):
         input = "eightwothree"
-        self.assertEqual(Day01._process_line_part2(input), 83)
+        self.assertEqual(day01._process_line_part2(input), 83)
