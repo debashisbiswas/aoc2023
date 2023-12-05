@@ -1,6 +1,7 @@
 import os
 import re
 from dataclasses import dataclass
+from functools import reduce
 
 from advent import Day
 
@@ -46,7 +47,7 @@ class Day02(Day):
             if green_match:
                 greens = int(green_match.group(1))
 
-            return (reds, greens, blues)
+            return reds, greens, blues
 
         def is_possible(self, red: int, green: int, blue: int) -> bool:
             for set in self.sets:
@@ -54,6 +55,12 @@ class Day02(Day):
                     return False
 
             return True
+
+        def minimum_possible(self) -> tuple[int, int, int]:
+            required_reds = max(set[0] for set in self.sets)
+            required_blues = max(set[1] for set in self.sets)
+            required_greens = max(set[2] for set in self.sets)
+            return required_reds, required_blues, required_greens
 
     @classmethod
     def part1(cls, input: str) -> int:
@@ -63,5 +70,11 @@ class Day02(Day):
         return sum(possible_game_ids)
 
     @classmethod
+    def _get_power(cls, game: Game) -> int:
+        return reduce(lambda x, y: x * y, game.minimum_possible())
+
+    @classmethod
     def part2(cls, input: str) -> int:
-        return 0
+        processed_input = _preprocess_input(input)
+        games = [cls.Game.from_string(line) for line in processed_input]
+        return sum(cls._get_power(game) for game in games)
