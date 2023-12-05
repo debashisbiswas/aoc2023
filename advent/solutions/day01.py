@@ -2,6 +2,8 @@ import collections
 import os
 import re
 
+from advent import Day
+
 NumberIndex = collections.namedtuple("NumberIndex", ["index", "number"])
 
 
@@ -13,7 +15,7 @@ def _preprocess_input(input: str) -> list[str]:
     return nonempty_lines
 
 
-class Day01:
+class Day01(Day):
     NUMBERS = {
         "one": 1,
         "two": 2,
