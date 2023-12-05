@@ -5,21 +5,21 @@ from advent import Day01
 
 
 class Day01Tests(unittest.TestCase):
-    def test_day1(self):
+    def test_part1(self):
         input = textwrap.dedent(
-        """
+            """
             1abc2
             pqr3stu8vwx
             a1b2c3d4e5f
             treb7uchet
-        """
+            """
         )
 
         self.assertEqual(Day01.part1(input), 142)
 
-    def test_day2(self):
+    def test_part2(self):
         input = textwrap.dedent(
-        """
+            """
             two1nine
             eightwothree
             abcone2threexyz
@@ -27,7 +27,7 @@ class Day01Tests(unittest.TestCase):
             4nineeightseven2
             zoneight234
             7pqrstsixteen
-        """
+            """
         )
 
         self.assertEqual(Day01.part2(input), 281)
