@@ -1,4 +1,4 @@
-.PHONY: test run shell
+.PHONY: default test run shell
 
 default: test
 

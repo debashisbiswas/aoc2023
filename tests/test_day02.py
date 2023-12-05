@@ -4,7 +4,7 @@ import unittest
 from advent import day02
 
 
-class Day02Tests(unittest.TestCase):
+class TestDay02(unittest.TestCase):
     def test_part1(self):
         input = textwrap.dedent(
             """
