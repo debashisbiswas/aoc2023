@@ -1,7 +1,7 @@
 import textwrap
 import unittest
 
-from main import Day01
+from advent import Day01
 
 
 class Day01Tests(unittest.TestCase):
@@ -42,14 +42,6 @@ class Day01Tests(unittest.TestCase):
         self.assertEqual(Day01._find_first_digit(input), 7)
         self.assertEqual(Day01._find_last_digit(input), 7)
 
-    def test_process_line_part2(self):
-        input = "two1nine"
-        self.assertEqual(Day01._process_line_part2(input), 29)
-
-    def test_process_line_part2_overlap(self):
-        input = "eightwothree"
-        self.assertEqual(Day01._process_line_part2(input), 83)
-
     def test_get_all_digits_one_word(self):
         input = "eight"
         self.assertEqual(Day01._get_all_digits_on_line(input), [(0, 8)])
@@ -61,3 +53,11 @@ class Day01Tests(unittest.TestCase):
     def test_mean_case_that_started_this_whole_thing(self):
         input = "eightwothree"
         self.assertEqual(Day01._get_all_digits_on_line(input), [(0, 8), (4, 2), (7, 3)])
+
+    def test_process_line_part2(self):
+        input = "two1nine"
+        self.assertEqual(Day01._process_line_part2(input), 29)
+
+    def test_process_line_part2_overlap(self):
+        input = "eightwothree"
+        self.assertEqual(Day01._process_line_part2(input), 83)
