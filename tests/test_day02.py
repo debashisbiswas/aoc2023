@@ -35,7 +35,10 @@ class TestDay02(unittest.TestCase):
         input = "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green"
         game = day02.Game.from_string(input)
         self.assertEqual(game.id, 1)
-        self.assertEqual(game.sets, [(4, 0, 3), (1, 2, 6), (0, 2, 0)])
+        self.assertEqual(
+            game.sets,
+            [day02.RGB(4, 0, 3), day02.RGB(1, 2, 6), day02.RGB(0, 2, 0)],
+        )
 
     def test_game_from_string_double_digit_it(self):
         input = "Game 10: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green"
@@ -44,25 +47,25 @@ class TestDay02(unittest.TestCase):
 
     def test_game_process_set(self):
         input = "3 blue, 4 red"
-        self.assertEqual(day02.Game._process_one_set(input), (4, 0, 3))
+        self.assertEqual(day02.Game._process_one_set(input), day02.RGB(4, 0, 3))
 
     def test_game_process_set_double_digt(self):
         input = "3 blue, 40 red"
-        self.assertEqual(day02.Game._process_one_set(input), (40, 0, 3))
+        self.assertEqual(day02.Game._process_one_set(input), day02.RGB(40, 0, 3))
 
     def test_game_is_possible(self):
         input = "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green"
         game = day02.Game.from_string(input)
-        self.assertEqual(game.is_possible(12, 13, 14), True)
+        self.assertEqual(game.is_possible(day02.RGB(12, 13, 14)), True)
 
     def test_game_not_possible(self):
         input = (
             "Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red"
         )
         game = day02.Game.from_string(input)
-        self.assertEqual(game.is_possible(12, 13, 14), False)
+        self.assertEqual(game.is_possible(day02.RGB(12, 13, 14)), False)
 
     def test_game_minimum_possible(self):
         input = "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green"
         game = day02.Game.from_string(input)
-        self.assertEqual(day02._get_power(game), 48)
+        self.assertEqual(game.power(), 48)

@@ -1,7 +1,6 @@
 import os
 import re
 from dataclasses import dataclass
-from functools import reduce
 
 
 # repeat 3 times before DRY or something...
@@ -13,9 +12,16 @@ def _preprocess_input(input: str) -> list[str]:
 
 
 @dataclass
+class RGB:
+    red: int
+    green: int
+    blue: int
+
+
+@dataclass
 class Game:
     id: int
-    sets: list[tuple]
+    sets: list[RGB]
 
     @classmethod
     def from_string(cls, string: str):
@@ -28,50 +34,44 @@ class Game:
         return cls(id, sets)
 
     @staticmethod
-    def _process_one_set(string: str) -> tuple[int, int, int]:
-        red_match = re.search(r"(\d+) red", string)
-        reds = 0
-        if red_match:
-            reds = int(red_match.group(1))
+    def _process_one_set(string: str) -> RGB:
+        def _count_color(color: str) -> int:
+            match = re.search(f"(\\d+) {color}", string)
+            count = int(match.group(1)) if match else 0
+            return count
 
-        blue_match = re.search(r"(\d+) blue", string)
-        blues = 0
-        if blue_match:
-            blues = int(blue_match.group(1))
+        reds = _count_color("red")
+        greens = _count_color("green")
+        blues = _count_color("blue")
 
-        green_match = re.search(r"(\d+) green", string)
-        greens = 0
-        if green_match:
-            greens = int(green_match.group(1))
+        return RGB(reds, greens, blues)
 
-        return reds, greens, blues
+    def _minimum_possible(self) -> RGB:
+        required_reds = max(set.red for set in self.sets)
+        required_greens = max(set.green for set in self.sets)
+        required_blues = max(set.blue for set in self.sets)
+        return RGB(required_reds, required_greens, required_blues)
 
-    def is_possible(self, red: int, green: int, blue: int) -> bool:
-        for set in self.sets:
-            if any([set[0] > red, set[1] > green, set[2] > blue]):
-                return False
+    def is_possible(self, rgb: RGB) -> bool:
+        sets_possible = [
+            set.red <= rgb.red and set.green <= rgb.green and set.blue <= rgb.blue
+            for set in self.sets
+        ]
+        return all(sets_possible)
 
-        return True
-
-    def minimum_possible(self) -> tuple[int, int, int]:
-        required_reds = max(set[0] for set in self.sets)
-        required_blues = max(set[1] for set in self.sets)
-        required_greens = max(set[2] for set in self.sets)
-        return required_reds, required_blues, required_greens
+    def power(self) -> int:
+        minimum = self._minimum_possible()
+        return minimum.red * minimum.green * minimum.blue
 
 
 def part1(input: str) -> int:
     processed_input = _preprocess_input(input)
     games = [Game.from_string(line) for line in processed_input]
-    possible_game_ids = [game.id for game in games if game.is_possible(12, 13, 14)]
+    possible_game_ids = [game.id for game in games if game.is_possible(RGB(12, 13, 14))]
     return sum(possible_game_ids)
-
-
-def _get_power(game: Game) -> int:
-    return reduce(lambda x, y: x * y, game.minimum_possible())
 
 
 def part2(input: str) -> int:
     processed_input = _preprocess_input(input)
     games = [Game.from_string(line) for line in processed_input]
-    return sum(_get_power(game) for game in games)
+    return sum(game.power() for game in games)
