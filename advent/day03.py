@@ -1,8 +1,16 @@
 import os
 import re
 import string
+from collections import defaultdict
+from dataclasses import dataclass
 
 SYMBOLS = set(string.punctuation) - set(".")
+
+
+@dataclass(frozen=True)
+class Coordinate:
+    x: int
+    y: int
 
 
 def _preprocess_input(input: str) -> list[str]:
@@ -10,6 +18,23 @@ def _preprocess_input(input: str) -> list[str]:
     stripped_lines = [line.strip() for line in lines]
     nonempty_lines = [line for line in stripped_lines if line]
     return nonempty_lines
+
+
+def _get_surrounding_coordinates(coord: Coordinate) -> list[Coordinate]:
+    return [
+        Coordinate(coord.x + 1, coord.y + 1),
+        Coordinate(coord.x + 1, coord.y - 1),
+        Coordinate(coord.x + 1, coord.y),
+        Coordinate(coord.x - 1, coord.y + 1),
+        Coordinate(coord.x - 1, coord.y - 1),
+        Coordinate(coord.x - 1, coord.y),
+        Coordinate(coord.x, coord.y + 1),
+        Coordinate(coord.x, coord.y - 1),
+    ]
+
+
+def _access_coordinate(matrix: list[str], coord: Coordinate) -> str:
+    return matrix[coord.y][coord.x]
 
 
 def _get_part_numbers(input: list[str]) -> list[int]:
@@ -21,20 +46,11 @@ def _get_part_numbers(input: list[str]) -> list[int]:
             is_part = False
 
             for x in range(*match.span()):
-                coords = [
-                    (y - 1, x - 1),
-                    (y - 1, x),
-                    (y - 1, x + 1),
-                    (y, x + 1),
-                    (y + 1, x + 1),
-                    (y + 1, x),
-                    (y + 1, x - 1),
-                    (y, x - 1),
-                ]
+                surroundings = _get_surrounding_coordinates(Coordinate(x, y))
 
-                for coord in coords:
+                for neighbor in surroundings:
                     try:
-                        char = input[coord[0]][coord[1]]
+                        char = _access_coordinate(input, neighbor)
                     except IndexError:
                         continue
 
@@ -48,6 +64,38 @@ def _get_part_numbers(input: list[str]) -> list[int]:
     return result
 
 
+def _get_gear_ratios(input: list[str]) -> list[int]:
+    gear_tracker: defaultdict[Coordinate, list[int]] = defaultdict(list)
+
+    for y, line in enumerate(input):
+        matches = re.finditer(r"(\d+)", line)
+
+        for match in matches:
+            accounted_for = False
+
+            for x in range(*match.span()):
+                surroundings = _get_surrounding_coordinates(Coordinate(x, y))
+
+                for neighbor in surroundings:
+                    try:
+                        char = _access_coordinate(input, neighbor)
+                    except IndexError:
+                        continue
+
+                    if char == "*" and not accounted_for:
+                        gear_tracker[neighbor].append(int(match.group(1)))
+                        accounted_for = True
+                        break
+
+
+    result = []
+    for nearby_numbers in gear_tracker.values():
+        if len(nearby_numbers) == 2:
+            result.append(nearby_numbers[0] * nearby_numbers[1])
+
+    return result
+
+
 def part1(input: str) -> int:
     processed_input = _preprocess_input(input)
     part_numbers = _get_part_numbers(processed_input)
@@ -55,4 +103,6 @@ def part1(input: str) -> int:
 
 
 def part2(input: str) -> int:
-    return 0
+    processed_input = _preprocess_input(input)
+    gear_ratios = _get_gear_ratios(processed_input)
+    return sum(gear_ratios)
