@@ -6,7 +6,7 @@ test:
 	poetry run python -m unittest -v
 
 run:
-	poetry run python main.py
+	poetry run python main.py -OO
 
 shell:
 	poetry shell
