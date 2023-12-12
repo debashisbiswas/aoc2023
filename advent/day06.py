@@ -33,6 +33,18 @@ def parse_races(string: str) -> list[Race]:
     return [Race(time, dist) for time, dist in zip(times, dists)]
 
 
+def parse_race_part_2(string: str) -> Race:
+    time_line, dist_line = string.splitlines()
+
+    _time_prefix, time_values = time_line.split(":")
+    _dist_prefix, dist_values = dist_line.split(":")
+
+    time = int("".join(time_values.split()))
+    dist = int("".join(dist_values.split()))
+
+    return Race(time, dist)
+
+
 def part1(input: str) -> int:
     races = parse_races(input)
     winning_strat_count = (len(race.winning_numbers) for race in races)
@@ -40,4 +52,5 @@ def part1(input: str) -> int:
 
 
 def part2(input: str) -> int:
-    return 0
+    race = parse_race_part_2(input)
+    return len(race.winning_numbers)
