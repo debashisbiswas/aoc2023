@@ -46,8 +46,9 @@ class TestDay05(unittest.TestCase):
     def test_part1(self):
         self.assertEqual(day05.part1(EXAMPLE), 35)
 
-    # def test_part2(self):
-    #     self.assertEqual(day05.part2(EXAMPLE), 30)
+    @unittest.skip("Haven't solved this one yet!")
+    def test_part2(self):
+        self.assertEqual(day05.part2(EXAMPLE), 46)
 
     def test_parse_seed_line(self):
         seed_line = "seeds: 79 14 55 13"
@@ -84,3 +85,8 @@ class TestDay05(unittest.TestCase):
         self.assertEqual(map.lookup(14), 14)
         self.assertEqual(map.lookup(55), 57)
         self.assertEqual(map.lookup(13), 13)
+
+
+    def test_parse_seed_line_part_2(self):
+        seed_line = "seeds: 79 14 55 13"
+        self.assertEqual(day05.parse_seed_line_part_2(seed_line), [range(79, 93), range(55, 68)])
