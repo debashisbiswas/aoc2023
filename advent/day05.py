@@ -1,4 +1,3 @@
-import os
 from dataclasses import dataclass
 
 
@@ -8,6 +7,14 @@ class MapRule:
     destination: int
     range_length: int
 
+    def lookup(self, number: int) -> int | None:
+        source_range = range(self.source, self.source + self.range_length)
+        dest_range = range(self.destination, self.destination + self.range_length)
+
+        if number in source_range:
+            index = source_range.index(number)
+            return dest_range[index]
+
 
 @dataclass
 class Map:
@@ -15,20 +22,27 @@ class Map:
 
     def lookup(self, number: int) -> int:
         for rule in self.rules:
-            source_range = range(rule.source, rule.source + rule.range_length)
-            dest_range = range(rule.destination, rule.destination + rule.range_length)
-
-            if number in source_range:
-                idx = source_range.index(number)
-                return dest_range[idx]
+            if result := rule.lookup(number):
+                return result
 
         return number
+
 
 def part1(input: str) -> int:
     seed_line, *map_sections = input.split("\n" * 2)
     seeds = parse_seed_line(seed_line)
     maps = [parse_map(section) for section in map_sections]
 
+    locations = get_location_numbers(seeds, maps)
+
+    return min(locations)
+
+
+def part2(input: str) -> int:
+    return 0
+
+
+def get_location_numbers(seeds: list[int], maps: list[Map]) -> list[int]:
     locations = []
     for seed in seeds:
         current_value = seed
@@ -38,11 +52,7 @@ def part1(input: str) -> int:
 
         locations.append(current_value)
 
-    return min(locations)
-
-
-def part2(input: str) -> int:
-    return 0
+    return locations
 
 
 def parse_map(map_section: str) -> Map:
