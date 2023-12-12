@@ -1,16 +1,7 @@
 import collections
-import os
 import re
 
 NumberIndex = collections.namedtuple("NumberIndex", ["index", "number"])
-
-
-# TODO: put this somewhere reusable
-def _preprocess_input(input: str) -> list[str]:
-    lines = input.split(os.linesep)
-    stripped_lines = [line.strip() for line in lines]
-    nonempty_lines = [line for line in stripped_lines if line]
-    return nonempty_lines
 
 
 NUMBERS = {
@@ -27,13 +18,13 @@ NUMBERS = {
 
 
 def part1(input: str) -> int:
-    processed_input = _preprocess_input(input)
-    return sum(_process_line(line) for line in processed_input)
+    lines = input.splitlines()
+    return sum(_process_line(line) for line in lines)
 
 
 def part2(input: str) -> int:
-    processed_input = _preprocess_input(input)
-    return sum(_process_line_part2(line) for line in processed_input)
+    lines = input.splitlines()
+    return sum(_process_line_part2(line) for line in lines)
 
 
 def _process_line(line: str) -> int:
@@ -42,7 +33,7 @@ def _process_line(line: str) -> int:
     return int(f"{first}{last}")
 
 
-def _process_line_part2(line) -> int:
+def _process_line_part2(line: str) -> int:
     numbers = _get_all_digits_on_line(line)
     first = numbers[0].number
     last = numbers[-1].number

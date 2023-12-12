@@ -1,12 +1,12 @@
-import textwrap
 import unittest
 
 from advent import day01
+from tests.helpers import like_file
 
 
 class TestDay01(unittest.TestCase):
     def test_part1(self):
-        input = textwrap.dedent(
+        input = like_file(
             """
             1abc2
             pqr3stu8vwx
@@ -17,7 +17,7 @@ class TestDay01(unittest.TestCase):
         self.assertEqual(day01.part1(input), 142)
 
     def test_part2(self):
-        input = textwrap.dedent(
+        input = like_file(
             """
             two1nine
             eightwothree

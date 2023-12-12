@@ -14,9 +14,10 @@ class Day:
 
 
 def create_header_string() -> str:
-    parts = []
-    parts += [f"         | Part 1     | (time)     | Part 2     | (time)     "]
-    parts += [f"---------+------------+------------+------------+------------"]
+    parts = [
+        f"         | Part 1     | (time)     | Part 2     | (time)     ",
+        f"---------+------------+------------+------------+------------"
+    ]
     return os.linesep.join(parts)
 
 
@@ -32,7 +33,9 @@ def print_solutions(days: list[Day]):
     print(create_header_string())
 
     for day in days:
-        with open(day.input_filename) as file:
+        with open(day.input_filename, 'r') as file:
+            # Just get the raw file here. The solution for the day can decide
+            # how to parse it.
             input = file.read()
 
         part_one_start = time()

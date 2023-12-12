@@ -1,14 +1,5 @@
-import os
 import re
 from dataclasses import dataclass
-
-
-# repeat 3 times before DRY or something...
-def _preprocess_input(input: str) -> list[str]:
-    lines = input.split(os.linesep)
-    stripped_lines = [line.strip() for line in lines]
-    nonempty_lines = [line for line in stripped_lines if line]
-    return nonempty_lines
 
 
 @dataclass
@@ -65,13 +56,13 @@ class Game:
 
 
 def part1(input: str) -> int:
-    processed_input = _preprocess_input(input)
-    games = [Game.from_string(line) for line in processed_input]
+    lines = input.splitlines()
+    games = [Game.from_string(line) for line in lines]
     possible_game_ids = [game.id for game in games if game.is_possible(RGB(12, 13, 14))]
     return sum(possible_game_ids)
 
 
 def part2(input: str) -> int:
-    processed_input = _preprocess_input(input)
-    games = [Game.from_string(line) for line in processed_input]
+    lines = input.splitlines()
+    games = [Game.from_string(line) for line in lines]
     return sum(game.power() for game in games)

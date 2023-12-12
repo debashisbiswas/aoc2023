@@ -33,13 +33,6 @@ class Card:
         return 2 ** (self.match_count - 1) if self.match_count else 0
 
 
-# repeat 3 times before DRY or something...
-def _preprocess_input(input: str) -> list[str]:
-    lines = input.split(os.linesep)
-    stripped_lines = [line.strip() for line in lines]
-    nonempty_lines = [line for line in stripped_lines if line]
-    return nonempty_lines
-
 def _process_cards(cards_index: dict[int, Card], remaining: list[Card]) -> int:
     cards = [1] * len(cards_index)
 
@@ -52,14 +45,14 @@ def _process_cards(cards_index: dict[int, Card], remaining: list[Card]) -> int:
 
 
 def part1(input: str) -> int:
-    processed_input = _preprocess_input(input)
-    scores = [Card.from_string(line).score for line in processed_input]
+    lines = input.splitlines()
+    scores = [Card.from_string(line).score for line in lines]
     return sum(scores)
 
 
 def part2(input: str) -> int:
-    processed_input = _preprocess_input(input)
-    cards = [Card.from_string(line) for line in processed_input]
+    lines = input.splitlines()
+    cards = [Card.from_string(line) for line in lines]
 
     index = {card.id: card for card in cards}
     final_card_count = _process_cards(index, cards.copy())

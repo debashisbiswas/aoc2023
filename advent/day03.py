@@ -1,4 +1,3 @@
-import os
 import re
 import string
 from collections import defaultdict
@@ -11,13 +10,6 @@ SYMBOLS = set(string.punctuation) - set(".")
 class Coordinate:
     x: int
     y: int
-
-
-def _preprocess_input(input: str) -> list[str]:
-    lines = input.split(os.linesep)
-    stripped_lines = [line.strip() for line in lines]
-    nonempty_lines = [line for line in stripped_lines if line]
-    return nonempty_lines
 
 
 def _get_surrounding_coordinates(coord: Coordinate) -> list[Coordinate]:
@@ -87,7 +79,6 @@ def _get_gear_ratios(input: list[str]) -> list[int]:
                         accounted_for = True
                         break
 
-
     result = []
     for nearby_numbers in gear_tracker.values():
         if len(nearby_numbers) == 2:
@@ -97,12 +88,12 @@ def _get_gear_ratios(input: list[str]) -> list[int]:
 
 
 def part1(input: str) -> int:
-    processed_input = _preprocess_input(input)
-    part_numbers = _get_part_numbers(processed_input)
+    lines = input.splitlines()
+    part_numbers = _get_part_numbers(lines)
     return sum(part_numbers)
 
 
 def part2(input: str) -> int:
-    processed_input = _preprocess_input(input)
-    gear_ratios = _get_gear_ratios(processed_input)
+    lines = input.splitlines()
+    gear_ratios = _get_gear_ratios(lines)
     return sum(gear_ratios)
