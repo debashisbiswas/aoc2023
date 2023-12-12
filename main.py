@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from time import time
 from types import ModuleType
 
-from advent import day01, day02, day03, day04, day05
+from advent import day01, day02, day03, day04, day05, day06
 
 
 @dataclass
@@ -63,6 +63,7 @@ def main():
         Day("Day 03", "inputs/day03.txt", day03),
         Day("Day 04", "inputs/day04.txt", day04),
         Day("Day 05", "inputs/day05.txt", day05),
+        Day("Day 06", "inputs/day06.txt", day06),
     ]
 
     print_solutions(days)
